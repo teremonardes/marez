@@ -1,0 +1,99 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+
+const navItems = [
+  { label: "Nosotros", href: "#nosotros" },
+  { label: "Servicios", href: "#servicios" },
+  { label: "Productos", href: "#productos" },
+  { label: "Contacto", href: "#contacto" },
+];
+
+export default function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  return (
+  <header className="sticky top-0 z-50 w-full bg-[var(--sand-yellow)]">
+      <nav className="mx-auto flex h-20 items-center justify-between px-6 md:px-10">
+        {/* Logo */}
+        <Link href="/" className="relative z-50">
+          <Image
+            src="/logo-marez.png"
+            alt="Marez"
+            width={120}
+            height={40}
+            priority
+            className="h-25 w-auto"
+          />
+        </Link>
+        {/* Desktop navigation */}
+        <div className="hidden items-center gap-10 md:flex">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="relative text-sm font-medium transition-colors duration-300 hover:text-[var(--blue)]"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+
+        {/* Mobile menu button */}
+        <button
+          type="button"
+          aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="relative z-50 flex h-10 w-10 items-center justify-center md:hidden"
+        >
+          <span className="sr-only">
+            {menuOpen ? "Cerrar menú" : "Abrir menú"}
+          </span>
+
+          <div className="flex w-6 flex-col gap-1.5">
+            <span
+              className={`h-px w-full bg-[var(--earth-black)] transition-transform duration-300 ${
+                menuOpen ? "translate-y-[4px] rotate-45" : ""
+              }`}
+            />
+
+            <span
+              className={`h-px w-full bg-[var(--earth-black)] transition-opacity duration-300 ${
+                menuOpen ? "opacity-0" : ""
+              }`}
+            />
+
+            <span
+              className={`h-px w-full bg-[var(--earth-black)] transition-transform duration-300 ${
+                menuOpen ? "-translate-y-[4px] -rotate-45" : ""
+              }`}
+            />
+          </div>
+        </button>
+
+        {/* Mobile navigation */}
+        <div
+          className={`fixed inset-0 flex flex-col items-center justify-center gap-8 bg-[var(--sand-yellow)] transition-all duration-300 md:hidden ${
+            menuOpen
+              ? "pointer-events-auto opacity-100"
+              : "pointer-events-none opacity-0"
+          }`}
+        >
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setMenuOpen(false)}
+              className="font-[var(--font-libre-baskerville)] text-3xl transition-colors duration-300 hover:text-[var(--blue)]"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </nav>
+    </header>
+  );
+}

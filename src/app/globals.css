@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+:root {
+  --earth-black: #444442;
+  --olive-green: #c0cea6;
+  --sand-yellow: #fefed3;
+  --blue: #386aae;
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--sand-yellow);
+  color: var(--earth-black);
+  font-family: var(--font-manrope), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+  font-family: var(--font-quando), serif;
+  font-weight: 400;
+}
+
+h2,
+h3 {
+  font-family: var(--font-libre-baskerville), serif;
+  font-weight: 400;
+}
+
+button,
+a {
+  font-family: var(--font-manrope), sans-serif;
+}
