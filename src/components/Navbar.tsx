@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const navItems = [
   { label: "Nosotros", href: "#nosotros" },
@@ -12,11 +12,37 @@ const navItems = [
 ];
 
 export default function Navbar() {
+  const [isVisible, setIsVisible] = useState(true);
+const [lastScrollY, setLastScrollY] = useState(0);
+
+useEffect(() => {
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+
+    if (currentScrollY > lastScrollY && currentScrollY > 80) {
+      setIsVisible(false);
+    } else {
+      setIsVisible(true);
+    }
+
+    setLastScrollY(currentScrollY);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+  };
+}, [lastScrollY]);
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-  <header className="sticky top-0 z-50 w-full bg-[var(--sand-yellow)]">
-      <nav className="mx-auto flex h-20 items-center justify-between px-6 md:px-10">
+<header
+  className={`fixed top-0 left-0 z-50 w-full transition-transform duration-300 ${
+    isVisible ? "translate-y-0" : "-translate-y-full"
+  }`}
+>
+    <nav className="flex h-20 w-full items-center justify-between bg-[var(--sand-yellow)] px-6 md:px-10">
         {/* Logo */}
         <Link href="/" className="relative z-50">
           <Image
