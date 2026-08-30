@@ -1,7 +1,57 @@
+import Image from "next/image";
+import Link from "next/link";
+
+const footerLinks = [
+  { label: "Nosotros", href: "#nosotros" },
+  { label: "Servicios", href: "#servicios" },
+  { label: "Productos", href: "#productos" },
+];
+
 export default function Footer() {
   return (
-    <footer>
-      <p>Marez</p>
+    <footer
+      id="contacto"
+      className="relative overflow-hidden bg-[var(--earth-black)] text-[var(--sand-yellow)]"
+    >
+      <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-9 sm:px-10 sm:py-11 lg:px-16">
+        <div className="flex flex-col gap-7  sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="font-[var(--font-quando)] text-3xl">Marez</p>
+            {/* <p className="mt-2 max-w-xs text-sm leading-relaxed text-white/55">
+              
+            </p> */}
+          </div>
+
+          <nav aria-label="Navegación del pie de página">
+            <ul className="flex flex-wrap gap-x-7 gap-y-3 text-sm">
+              {footerLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-white/70 transition-colors hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <p className="text-xs text-white/40">
+            © {new Date().getFullYear()} Marez
+          </p>
+        </div>
+      </div>
+
+      <div className="pointer-events-none absolute -right-16 top-1/2 h-72 w-72 -translate-y-1/2 opacity-20 sm:-right-10 sm:h-80 sm:w-80 sm:opacity-35 lg:right-0 lg:opacity-55">
+        <Image
+          src="/images/footer-pattern.png"
+          alt=""
+          fill
+          sizes="(min-width: 1024px) 640px, 512px"
+          className="object-cover"
+        />
+      </div>
     </footer>
   );
 }
