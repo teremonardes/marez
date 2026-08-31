@@ -5,6 +5,7 @@ const footerLinks = [
   { label: "Nosotros", href: "#nosotros" },
   { label: "Servicios", href: "#servicios" },
   { label: "Productos", href: "#productos" },
+  { label: "Contacto", href: "#contacto" }
 ];
 
 export default function Footer() {
@@ -15,12 +16,19 @@ export default function Footer() {
     >
       <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-9 sm:px-10 sm:py-11 lg:px-16">
         <div className="flex flex-col gap-7  sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="font-[var(--font-quando)] text-3xl">Marez</p>
-            {/* <p className="mt-2 max-w-xs text-sm leading-relaxed text-white/55">
-              
-            </p> */}
-          </div>
+          <Link
+            href="/"
+            aria-label="Ir al inicio"
+            className="relative block h-10 w-[70px] overflow-hidden transition-opacity hover:opacity-80"
+          >
+            <Image
+              src="/images/logo-blue.png"
+              alt="Marez"
+              width={70}
+              height={70}
+              className="absolute -top-[17px] left-0 h-[70px] w-[70px] max-w-none"
+            />
+          </Link>
 
           <nav aria-label="Navegación del pie de página">
             <ul className="flex flex-wrap gap-x-7 gap-y-3 text-sm">
