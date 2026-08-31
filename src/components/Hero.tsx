@@ -43,7 +43,7 @@ export default function Hero() {
   }, [emblaApi]);
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section id="inicio" className="relative h-screen w-full overflow-hidden">
       {/* Carrusel */}
       <div ref={emblaRef} className="h-full w-full overflow-hidden">
         <div className="flex h-full">

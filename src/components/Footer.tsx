@@ -1,14 +1,34 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import type { MouseEvent } from "react";
 
 const footerLinks = [
   { label: "Nosotros", href: "#nosotros" },
   { label: "Servicios", href: "#servicios" },
   { label: "Productos", href: "#productos" },
-  { label: "Contacto", href: "#contacto" }
+  { label: "Contacto", href: "#contacto" },
 ];
 
 export default function Footer() {
+  const handleAnchorClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    event.preventDefault();
+
+    const target = document.querySelector<HTMLElement>(href);
+
+    if (!target) return;
+
+    if (window.location.hash !== href) {
+      window.history.pushState(null, "", href);
+    }
+
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <footer
       id="contacto"
@@ -17,7 +37,8 @@ export default function Footer() {
       <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-9 sm:px-10 sm:py-11 lg:px-16">
         <div className="flex flex-col gap-7  sm:flex-row sm:items-end sm:justify-between">
           <Link
-            href="/"
+            href="#inicio"
+            onClick={(event) => handleAnchorClick(event, "#inicio")}
             aria-label="Ir al inicio"
             className="relative block h-10 w-[70px] overflow-hidden transition-opacity hover:opacity-80"
           >
@@ -36,6 +57,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
+                    onClick={(event) => handleAnchorClick(event, link.href)}
                     className="text-white/70 transition-colors hover:text-white"
                   >
                     {link.label}
