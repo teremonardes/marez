@@ -6,12 +6,12 @@ const words = ["Diseño,", "identidad", "y calidad", "en cada detalle."];
 
 export default function BrandStatement() {
   return (
-    <section className="flex min-h-[80vh] items-center bg-[var(--sand-yellow)] px-6 py-32 md:px-10">
+    <section className="flex min-h-[62vh] items-center bg-[var(--sand-yellow)] px-6 pb-10 pt-20 md:min-h-[68vh] md:px-10 md:pb-14 md:pt-24">
       <div className="mx-auto max-w-7xl">
         <motion.h2
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: false, amount: 0.35 }}
           className="max-w-6xl font-[var(--font-quando)] text-5xl leading-[1.05] text-[var(--earth-black)] md:text-7xl lg:text-8xl"
         >
           {words.map((word, index) => (

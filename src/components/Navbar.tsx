@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import type { MouseEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const navItems = [
   { label: "Nosotros", href: "#nosotros" },
@@ -13,28 +14,54 @@ const navItems = [
 
 export default function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
-const [lastScrollY, setLastScrollY] = useState(0);
+  const [hasScrolled, setHasScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const lastScrollY = useRef(0);
 
-useEffect(() => {
-  const handleScroll = () => {
-    const currentScrollY = window.scrollY;
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const isScrollingDown = currentScrollY > lastScrollY.current;
 
-    if (currentScrollY > lastScrollY && currentScrollY > 80) {
-      setIsVisible(false);
-    } else {
-      setIsVisible(true);
+      setHasScrolled(currentScrollY > 80);
+
+      if (isScrollingDown && currentScrollY > 80) {
+        setIsVisible(false);
+        setMenuOpen(false);
+      } else {
+        setIsVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    lastScrollY.current = window.scrollY;
+    const initialFrame = window.requestAnimationFrame(handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.cancelAnimationFrame(initialFrame);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleNavClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    event.preventDefault();
+    setMenuOpen(false);
+
+    const target = document.querySelector<HTMLElement>(href);
+
+    if (!target) return;
+
+    if (window.location.hash !== href) {
+      window.history.pushState(null, "", href);
     }
 
-    setLastScrollY(currentScrollY);
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
   };
-
-  window.addEventListener("scroll", handleScroll);
-
-  return () => {
-    window.removeEventListener("scroll", handleScroll);
-  };
-}, [lastScrollY]);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
 <header
@@ -44,14 +71,24 @@ useEffect(() => {
 >
     <nav className="flex h-20 w-full items-center justify-between px-4 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="relative z-50">
+        <Link
+          href="#inicio"
+          onClick={(event) => handleNavClick(event, "#inicio")}
+          className="relative z-50"
+          aria-label="Ir al inicio"
+        >
           <Image
             src="/logo.png"
             alt="Marez"
             width={180}
             height={40}
             priority
-            className="h-25 w-auto"
+            style={{
+              filter: hasScrolled
+                ? "brightness(0) saturate(100%) invert(26%)"
+                : "none",
+            }}
+            className="h-25 w-auto transition-[filter] duration-300"
           />
         </Link>
         {/* Desktop navigation */}
@@ -60,8 +97,12 @@ useEffect(() => {
             <Link
               key={item.href}
               href={item.href}
-              className="relative text-sm font-medium text-[var(--sand-yellow)] transition-all duration-300  hover:scale-110
-    hover:text-white"
+              onClick={(event) => handleNavClick(event, item.href)}
+              className={`relative text-sm font-medium transition-all duration-300 hover:scale-110 ${
+                hasScrolled
+                  ? "text-[var(--earth-black)] hover:text-[var(--earth-black)]/65"
+                  : "text-[var(--sand-yellow)] hover:text-white"
+              }`}
             >
               {item.label}
             </Link>
@@ -82,20 +123,26 @@ useEffect(() => {
 
         <div className="flex w-6 flex-col gap-1.5">
     <span
-      className={`h-[2px] w-full bg-[var(--sand-yellow)] transition-all duration-300 ${
+      className={`h-[2px] w-full transition-all duration-300 ${
+        hasScrolled ? "bg-[var(--earth-black)]" : "bg-[var(--sand-yellow)]"
+      } ${
         menuOpen ? "translate-y-2 rotate-45" : ""
       }`}
     />
 
 
           <span
-      className={`h-[2px] w-full bg-[var(--sand-yellow)] transition-all duration-300 ${
+      className={`h-[2px] w-full transition-all duration-300 ${
+        hasScrolled ? "bg-[var(--earth-black)]" : "bg-[var(--sand-yellow)]"
+      } ${
         menuOpen ? "opacity-0" : ""
       }`}
     />
 
            <span
-      className={`h-[2px] w-full bg-[var(--sand-yellow)] transition-all duration-300 ${
+      className={`h-[2px] w-full transition-all duration-300 ${
+        hasScrolled ? "bg-[var(--earth-black)]" : "bg-[var(--sand-yellow)]"
+      } ${
         menuOpen ? "-translate-y-2 -rotate-45" : ""
       }`}
     />
@@ -115,7 +162,7 @@ useEffect(() => {
       <Link
         key={item.href}
         href={item.href}
-        onClick={() => setMenuOpen(false)}
+        onClick={(event) => handleNavClick(event, item.href)}
         className="
           font-[var(--font-manrope)]
           text-lg
