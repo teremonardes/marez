@@ -42,7 +42,7 @@ export default function Services() {
   return (
     <section
       id="servicios"
-      className="scroll-mt-20 overflow-hidden bg-[var(--sand-yellow)] px-6 pb-20 pt-6 sm:px-10 sm:pb-24 sm:pt-8 lg:px-16 lg:pb-28 lg:pt-10"
+      className="overflow-hidden bg-[var(--sand-yellow)] px-6 pb-20 pt-6 sm:px-10 sm:pb-24 sm:pt-8 lg:px-16 lg:pb-28 lg:pt-10"
     >
       <div className="mx-auto max-w-[1440px]">
         <div className="grid gap-8 md:gap-10 lg:grid-cols-3 lg:gap-5 xl:gap-10">

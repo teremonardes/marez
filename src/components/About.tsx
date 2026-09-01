@@ -7,7 +7,7 @@ export default function About() {
   return (
     <section
       id="nosotros"
-      className="relative isolate flex min-h-[70vh] scroll-mt-20 items-center overflow-hidden px-6 py-32 sm:min-h-[75vh] sm:px-10 sm:py-32 lg:px-16 lg:py-36"
+      className="relative isolate flex min-h-[70vh] items-center overflow-hidden px-6 py-32 sm:min-h-[75vh] sm:px-10 sm:py-32 lg:px-16 lg:py-36"
     >
       <Image
         src="/images/close-up-web.jpg"
