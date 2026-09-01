@@ -6,17 +6,22 @@ import type { MouseEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 
 const navItems = [
-  { label: "Nosotros", href: "#nosotros" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "Productos", href: "#productos" },
-  { label: "Contacto", href: "#contacto" },
+  { label: "Nosotros", href: "/#nosotros" },
+  { label: "Servicios", href: "/#servicios" },
+  { label: "Productos", href: "/productos" },
+  { label: "Contacto", href: "/contacto" },
 ];
 
-export default function Navbar() {
+type NavbarProps = {
+  darkAtTop?: boolean;
+};
+
+export default function Navbar({ darkAtTop = false }: NavbarProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const lastScrollY = useRef(0);
+  const useDarkColors = darkAtTop || hasScrolled;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,15 +54,25 @@ export default function Navbar() {
     event: MouseEvent<HTMLAnchorElement>,
     href: string,
   ) => {
-    event.preventDefault();
     setMenuOpen(false);
 
-    const target = document.querySelector<HTMLElement>(href);
+    const destination = new URL(href, window.location.href);
+
+    if (
+      destination.pathname !== window.location.pathname ||
+      !destination.hash
+    ) {
+      return;
+    }
+
+    const target = document.querySelector<HTMLElement>(destination.hash);
 
     if (!target) return;
 
-    if (window.location.hash !== href) {
-      window.history.pushState(null, "", href);
+    event.preventDefault();
+
+    if (window.location.hash !== destination.hash) {
+      window.history.pushState(null, "", destination.hash);
     }
 
     target.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -72,8 +87,8 @@ export default function Navbar() {
     <nav className="flex h-20 w-full items-center justify-between px-4 lg:px-8">
         {/* Logo */}
         <Link
-          href="#inicio"
-          onClick={(event) => handleNavClick(event, "#inicio")}
+          href="/#inicio"
+          onClick={(event) => handleNavClick(event, "/#inicio")}
           className="relative z-50"
           aria-label="Ir al inicio"
         >
@@ -84,7 +99,7 @@ export default function Navbar() {
             height={40}
             priority
             style={{
-              filter: hasScrolled
+              filter: useDarkColors
                 ? "brightness(0) saturate(100%) invert(26%)"
                 : "none",
             }}
@@ -99,7 +114,7 @@ export default function Navbar() {
               href={item.href}
               onClick={(event) => handleNavClick(event, item.href)}
               className={`relative text-sm font-medium transition-all duration-300 hover:scale-110 ${
-                hasScrolled
+                useDarkColors
                   ? "text-[var(--earth-black)] hover:text-[var(--earth-black)]/65"
                   : "text-[var(--sand-yellow)] hover:text-white"
               }`}
@@ -124,7 +139,7 @@ export default function Navbar() {
         <div className="flex w-6 flex-col gap-1.5">
     <span
       className={`h-[2px] w-full transition-all duration-300 ${
-        hasScrolled ? "bg-[var(--earth-black)]" : "bg-[var(--sand-yellow)]"
+        useDarkColors ? "bg-[var(--earth-black)]" : "bg-[var(--sand-yellow)]"
       } ${
         menuOpen ? "translate-y-2 rotate-45" : ""
       }`}
@@ -133,7 +148,7 @@ export default function Navbar() {
 
           <span
       className={`h-[2px] w-full transition-all duration-300 ${
-        hasScrolled ? "bg-[var(--earth-black)]" : "bg-[var(--sand-yellow)]"
+        useDarkColors ? "bg-[var(--earth-black)]" : "bg-[var(--sand-yellow)]"
       } ${
         menuOpen ? "opacity-0" : ""
       }`}
@@ -141,7 +156,7 @@ export default function Navbar() {
 
            <span
       className={`h-[2px] w-full transition-all duration-300 ${
-        hasScrolled ? "bg-[var(--earth-black)]" : "bg-[var(--sand-yellow)]"
+        useDarkColors ? "bg-[var(--earth-black)]" : "bg-[var(--sand-yellow)]"
       } ${
         menuOpen ? "-translate-y-2 -rotate-45" : ""
       }`}

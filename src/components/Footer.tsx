@@ -5,10 +5,10 @@ import Link from "next/link";
 import type { MouseEvent } from "react";
 
 const footerLinks = [
-  { label: "Nosotros", href: "#nosotros" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "Productos", href: "#productos" },
-  { label: "Contacto", href: "#contacto" },
+  { label: "Nosotros", href: "/#nosotros" },
+  { label: "Servicios", href: "/#servicios" },
+  { label: "Productos", href: "/productos" },
+  { label: "Contacto", href: "/contacto" },
 ];
 
 export default function Footer() {
@@ -16,29 +16,35 @@ export default function Footer() {
     event: MouseEvent<HTMLAnchorElement>,
     href: string,
   ) => {
-    event.preventDefault();
+    const destination = new URL(href, window.location.href);
 
-    const target = document.querySelector<HTMLElement>(href);
+    if (
+      destination.pathname !== window.location.pathname ||
+      !destination.hash
+    ) {
+      return;
+    }
+
+    const target = document.querySelector<HTMLElement>(destination.hash);
 
     if (!target) return;
 
-    if (window.location.hash !== href) {
-      window.history.pushState(null, "", href);
+    event.preventDefault();
+
+    if (window.location.hash !== destination.hash) {
+      window.history.pushState(null, "", destination.hash);
     }
 
     target.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
-    <footer
-      id="contacto"
-      className="relative overflow-hidden bg-[var(--earth-black)] text-[var(--sand-yellow)]"
-    >
+    <footer className="relative overflow-hidden bg-[var(--earth-black)] text-[var(--sand-yellow)]">
       <div className="relative z-10 mx-auto max-w-[1440px] px-6 py-9 sm:px-10 sm:py-11 lg:px-16">
         <div className="flex flex-col gap-7  sm:flex-row sm:items-end sm:justify-between">
           <Link
-            href="#inicio"
-            onClick={(event) => handleAnchorClick(event, "#inicio")}
+            href="/#inicio"
+            onClick={(event) => handleAnchorClick(event, "/#inicio")}
             aria-label="Ir al inicio"
             className="relative block h-10 w-[70px] overflow-hidden transition-opacity hover:opacity-80"
           >
