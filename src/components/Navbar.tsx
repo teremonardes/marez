@@ -89,7 +89,7 @@ export default function Navbar({ darkAtTop = false }: NavbarProps) {
         <Link
           href="/#inicio"
           onClick={(event) => handleNavClick(event, "/#inicio")}
-          className="relative z-50"
+          className="relative z-50 -translate-x-3 sm:-translate-x-2 lg:-translate-x-1"
           aria-label="Ir al inicio"
         >
           <Image

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const services = [
   {
@@ -78,6 +79,34 @@ export default function Services() {
             </motion.article>
           ))}
         </div>
+
+        <motion.article
+          initial={{ opacity: 0, y: 60, scale: 0.97 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+          className="mx-auto mt-12 grid w-[96%] gap-7 rounded-[3rem_5rem_3.5rem_4.5rem] bg-[var(--blue)] px-8 py-12 text-[var(--sand-yellow)] sm:mt-16 sm:px-12 sm:py-14 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-16 lg:px-16 lg:py-16"
+        >
+          <h3 className="max-w-[12ch] text-3xl leading-tight sm:text-4xl lg:text-5xl">
+            Proyectos personalizados
+          </h3>
+
+          <div>
+            <p className="max-w-3xl text-base leading-relaxed text-[var(--sand-yellow)]/80 sm:text-lg lg:text-xl">
+              Desarrollamos soluciones textiles a medida, pensadas para las
+              necesidades de cada cliente. Trabajamos junto a marcas de consumo,
+              destinos turísticos, instituciones y espacios comerciales para
+              crear productos con identidad propia.
+            </p>
+            <Link
+              href="/contacto"
+              className="mt-8 inline-flex items-center gap-3 border-b border-[var(--sand-yellow)] pb-2 text-sm font-semibold uppercase tracking-[0.16em] transition-all hover:gap-5 hover:text-white"
+            >
+              ¡Trabajemos juntos!
+              <span aria-hidden="true">↗</span>
+            </Link>
+          </div>
+        </motion.article>
       </div>
     </section>
   );
